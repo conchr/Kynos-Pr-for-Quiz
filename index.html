@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Η Μάχη των Κυνός Κεφαλών (197 π.Χ.)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #d4af37;
+            --secondary-color: #8b4513;
+            --accent-color: #b8860b;
+            --light-bg: #fef9e7;
+            --dark-text: #2c1810;
+            --gold-color: #ffd700;
+            --bronze-color: #cd7f32;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #8b4513 0%, #d4af37 100%);
+            color: var(--dark-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Welcome Screen Styles */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.95) 0%, rgba(212, 175, 55, 0.95) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 100;
+            transition: opacity 0.8s ease-in-out;
+        }
+        
+        #welcome-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .welcome-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ffd700, #ffa500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+        
+        .welcome-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .welcome-btn {
+            background: linear-gradient(135deg, #8b4513, #a0522d);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+            font-size: 1.3rem;
+            border: 3px solid #ffd700;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.6);
+            background: linear-gradient(135deg, #a0522d, #8b4513);
+        }
+        
+        .welcome-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .welcome-btn:hover:before {
+            left: 100%;
+        }
+        
+        .quiz-btn {
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            color: #333;
+            border: 3px solid #8b4513;
+        }
+        
+        .quiz-btn:hover {
+            background: linear-gradient(135deg, #ffa500, #ffd700);
+        }
+
+        .welcome-text {
+            font-size: 1.1rem;
+            color: white;
+            text-align: center;
+            margin: 1.5rem 0;
+            line-height: 1.6;
+            max-width: 500px;
+            padding: 0 1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .presentation-container {
+            width: 100%;
+            max-width: 1200px;
+            height: 95vh;
+            background-color: var(--light-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            display: none; /* Αρχικά κρυφό */
+        }
+        .page {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.7s ease-in-out;
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+            background: 
+                radial-gradient(circle at 15% 85%, rgba(212, 175, 55, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 85% 15%, rgba(212, 175, 55, 0.2) 0%, transparent 40%),
+                linear-gradient(135deg, #fef9e7 0%, #fcf8e8 50%, #f5e6d3 100%);
+        }
+        .page.active {
+            display: flex;
+            flex-direction: column;
+        }
+        #page-1 {
+            background-color: var(--light-bg);
+            justify-content: center;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            line-height: 1.2;
+            background: linear-gradient(45deg, #8b4513, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-header h2 {
+            font-size: 1.5rem;
+            color: #8b4513;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        .page-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 1rem;
+        }
+        .page-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--secondary-color);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #ffd700;
+            padding-bottom: 0.5rem;
+            background: linear-gradient(45deg, #8b4513, #a0522d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-content ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .page-content li {
+            background-color: #f8fafc;
+            border-left: 4px solid var(--gold-color);
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 2.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .page-content li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .page-content li::before {
+            content: "⚔️";
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0.75rem;
+            top: 0.8rem;
+        }
+        .navigation-footer {
+            padding: 0.5rem 1.4rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            text-align: center;
+            border-top: 2px solid #ffd700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 8px rgba(139, 69, 19, 0.3);
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(139, 69, 19, 0.4);
+        }
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .btn-home {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            border: 2px solid #ffd700;
+        }
+        .btn-home:hover {
+            background: linear-gradient(135deg, #ff8e53, #ff6b6b);
+        }
+        .home-button-container {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            width: 100%;
+        }
+        .thank-you-page h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            text-align: center;
+            color: var(--secondary-color);
+            background: linear-gradient(45deg, #8b4513, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .quiz-button-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            margin: 0.5rem 0 0.7rem;
+            overflow: hidden;
+            width: 100%;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-color), var(--gold-color));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .page-indicator {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #8b4513;
+            margin-bottom: 0.35rem;
+            font-weight: 600;
+        }
+        .keyboard-hint {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #a0522d;
+            margin-top: 1rem;
+        }
+        .divider {
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--gold-color), transparent);
+            margin: 1.5rem 0;
+            border-radius: 2px;
+        }
+        .municipality-label {
+            position: absolute;
+            top: 0.5rem;
+            left: 1.5rem;
+            font-size: 0.85rem;
+            color: #8b4513;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: rgba(255, 215, 0, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            border: 1px solid #ffd700;
+            z-index: 10;
+        }
+        .battle-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            margin: 0 auto 1.5rem;
+            display: block;
+            max-height: 40vh;
+            object-fit: contain;
+            border: 3px solid #ffd700;
+            transition: transform 0.3s ease;
+        }
+        .battle-image:hover {
+            transform: scale(1.02);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Enhanced final page buttons */
+        .final-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+        
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            body { 
+                padding: 0.5rem; 
+                align-items: flex-start;
+                min-height: 100vh;
+            }
+            .presentation-container {
+                max-width: 100%;
+                border-radius: 8px;
+                height: 98vh;
+            }
+            .page { 
+                padding: 1rem;
+                padding-top: 2.5rem; /* Extra space for municipality label */
+            }
+            #page-1 {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+            .page-header h1 { 
+                font-size: 2rem; 
+                line-height: 1.2;
+            }
+            .page-header h2 { 
+                font-size: 1.3rem; 
+                line-height: 1.3;
+            }
+            .page-content {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            .page-content h3 {
+                font-size: 1.4rem;
+            }
+            .page-content li {
+                padding: 0.8rem;
+                padding-left: 2.2rem;
+            }
+            .navigation-footer {
+                padding: 0.4rem;
+            }
+            .municipality-label {
+                top: 0.5rem;
+                left: 1rem;
+                font-size: 0.75rem;
+            }
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.7rem;
+            }
+            .battle-image {
+                max-height: 30vh;
+            }
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+            .welcome-subtitle {
+                font-size: 1.2rem;
+            }
+            .welcome-btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Landscape Optimization */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .presentation-container {
+                height: 98vh;
+            }
+            .page {
+                padding: 1rem;
+                padding-top: 2rem; /* Extra space for municipality label */
+            }
+            #page-1 {
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+            }
+            .page-header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+            .page-header h2 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+            .page-content {
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+            .page-content h3 {
+                font-size: 1.3rem;
+                margin-top: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            .page-content li {
+                padding: 0.6rem;
+                padding-left: 2rem;
+                margin-bottom: 0.5rem;
+            }
+            .divider {
+                margin: 1rem 0;
+            }
+            .battle-image {
+                max-height: 25vh;
+            }
+            .navigation-footer {
+                padding: 0.3rem 0.7rem;
+            }
+            .btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.6rem;
+            }
+        }
+        
+        /* Smart TV Optimization */
+        @media (min-width: 1200px) {
+            body {
+                padding: 2rem;
+            }
+            .presentation-container {
+                max-width: 1400px;
+            }
+            .page {
+                padding: 2.5rem;
+                padding-top: 3.5rem; /* Extra space for municipality label */
+            }
+            #page-1 {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            .page-header h1 {
+                font-size: 3rem;
+            }
+            .page-header h2 {
+                font-size: 1.8rem;
+            }
+            .page-content {
+                font-size: 1.3rem;
+                line-height: 1.7;
+            }
+            .page-content h3 {
+                font-size: 2rem;
+            }
+            .page-content li {
+                padding: 1rem;
+                padding-left: 2.8rem;
+                margin-bottom: 0.8rem;
+            }
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+                border-radius: 30px;
+            }
+            .municipality-label {
+                font-size: 1rem;
+                top: 1rem;
+                left: 2rem;
+            }
+            .navigation-footer {
+                padding: 0.8rem 1.75rem;
+            }
+            .page-indicator {
+                font-size: 1rem;
+            }
+            .keyboard-hint {
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Ultra-wide screens */
+        @media (min-width: 1600px) {
+            .presentation-container {
+                max-width: 1600px;
+            }
+            .page {
+                padding: 3rem;
+                padding-top: 4rem; /* Extra space for municipality label */
+            }
+            #page-1 {
+                padding-top: 2.5rem;
+                padding-bottom: 2.5rem;
+            }
+        }
+        
+        /* Scrollbar styling */
+        .page-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .page-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .page-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--secondary-color), var(--gold-color));
+            border-radius: 10px;
+        }
+        .page-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--gold-color), var(--secondary-color));
+        }
+        
+        /* Ensure the first page title is always visible */
+        .title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        /* Προσθήκη περιθωρίου στις σελίδες για να αποφευχθεί η επικάλυψη */
+        .page:not(#page-1) {
+            padding-top: 3.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Εισαγωγική Οθόνη -->
+    <div id="welcome-screen">
+        <div class="text-center max-w-4xl px-4">
+            <h1 class="welcome-title">Η Μάχη που άλλαξε τον κόσμο</h1>
+            <h2 class="welcome-subtitle">Κυνός Κεφαλαί 197 π.χ.</h2>
+            
+            <div class="welcome-buttons">
+                <a href="https://conchr.github.io/Kynos-Quiz/" class="welcome-btn quiz-btn" aria-label="Παίξε το Κουίζ">
+                    Παίξε το Κουίζ
+                </a>
+            </div>
+            
+            <p class="welcome-text">
+                Θες να δεις την παρουσίαση της μάχης που έγινε ανάμεσα στους Ρωμαίους και τους Μακεδόνες;
+            </p>
+            
+            <div class="welcome-buttons">
+                <button id="start-btn" class="welcome-btn" aria-label="Δες την Παρουσίαση">
+                    Δες την Παρουσίαση
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="presentation-container">
+        <!-- Progress Bar -->
+        <div class="page-indicator">
+            <span id="currentPage">1</span> / <span id="totalPages">15</span>
+        </div>
+        <div class="progress-bar">
+            <div id="progress" class="progress" style="width: 6.66%"></div>
+        </div>
+
+        <!-- Page 1 -->
+        <div id="page-1" class="page active">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+            <div class="title-container">
+                <div class="page-header">
+                    <h1>ΚΥΝΟΣ ΚΕΦΑΛΑΙ (197 π.Χ.)</h1>
+                    <h2>Η ΜΑΧΗ ΠΟΥ ΑΛΛΑΞΕ ΤΟΝ ΚΟΣΜΟ</h2>
+                    <img src="https://github.com/conchr/Kynos-Presentation/blob/main/%5BArtistly%20Design%5D%200199e217-23f7-7165-b43c-c32e1dd9e47b.png?raw=true" alt="Μάχη Κυνός Κεφαλών" class="battle-image">
+                </div>
+                <div class="page-content text-center">
+                    <p>Μια παρουσίαση για τη μάχη που άλλαξε την ιστορία της Μεσογείου</p>
+                </div>
+                <div class="keyboard-hint">
+                    <i class="fas fa-info-circle"></i> Χρησιμοποιήστε τα βέλη για πλοήγηση
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2 -->
+        <div id="page-2" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+             <div class="page-header">
+                <h3>Εισαγωγή</h3>
+            </div>
+            <div class="page-content">
+                <p>Θα ταξιδέψουμε πίσω στο 197 π.Χ., στη Θεσσαλία, για να παρακολουθήσουμε μια σύγκρουση που δεν ήταν απλώς μια στρατιωτική νίκη—ήταν η στιγμή που ο ελληνιστικός κόσμος, ο κόσμος του Μεγάλου Αλεξάνδρου, συνάντησε το μέλλον του: τη Ρώμη.</p>
+                <div class="divider"></div>
+                <p>Η Μάχη των Κυνός Κεφαλών δεν ήταν απλώς μια μάχη. Ήταν η τελική μονομαχία ανάμεσα σε δύο στρατιωτικά δόγματα, τη Φάλαγγα και τη Λεγεώνα. Και η έκβασή της καθόρισε ποιος θα κυβερνούσε τη Μεσόγειο για τους επόμενους αιώνες.</p>
+            </div>
+        </div>
+        
+        <!-- Page 3 -->
+        <div id="page-3" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+            <div class="page-content">
+                <h3>Οι Πρωταγωνιστές και οι Δυνάμεις</h3>
+                 <ul>
+                    <li>
+                        <strong>Η Μακεδονία (Βασιλιάς Φίλιππος Ε'):</strong> Ο τελευταίος μεγάλος κληρονόμος της δυναστείας των Αντιγονιδών.
+                        <br><strong>Δύναμη:</strong> Περίπου 25.500 άνδρες.
+                        <br><strong>Καρδιά του Στρατού:</strong> Η πανίσχυρη Μακεδονική Φάλαγγα (16.000 φαλαγγίτες).
+                    </li>
+                    <li>
+                        <strong>Η Ρωμαϊκή Δημοκρατία (Ύπατος Τίτος Κουίνκτιος Φλαμινίνος):</strong> Μια ανερχόμενη δύναμη, έτοιμη να κυριαρχήσει στην Ανατολή.
+                        <br><strong>Δύναμη:</strong> Περίπου 34.000 άνδρες, χάρη στους Έλληνες συμμάχους.
+                        <br><strong>Στρατηγικό Πλεονέκτημα:</strong> Η ευέλικτη Ρωμαϊκή Λεγεώνα και μονάδες πολεμικών ελεφάντων.
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Page 4 -->
+        <div id="page-4" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+             <div class="page-content">
+                <h3>Οι Έλληνες Σύμμαχοι</h3>
+                <p>Ο Φλαμινίνος είχε κρίσιμους Έλληνες συμμάχους, με κυριότερη την Αιτωλική Συμπολιτεία. Οι Ρωμαίοι χρησιμοποίησαν το σύνθημα της «απελευθέρωσης» της Ελλάδας από τον μακεδονικό ζυγό, μετατρέποντας μια μάχη για την κυριαρχία σε αγώνα για την «ελευθερία».</p>
+                <div class="divider"></div>
+                <p>Οι Αιτωλοί, μαζί με άλλους Έλληνες συμμάχους, παρείχαν στρατιωτική υποστήριξη και τοπική γνώση, που αποδείχθηκαν καθοριστικοί παράγοντες για τη ρωμαϊκή νίκη.</p>
+            </div>
+        </div>
+        
+        <!-- Page 5 -->
+        <div id="page-5" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+             <div class="page-content">
+                <h3>Στρατιωτικά Δόγματα: Η Φάλαγγα</h3>
+                <ul>
+                    <li>
+                        <strong>Στόχος:</strong> Μετωπική συντριβή.
+                    </li>
+                     <li>
+                        <strong>Πλεονέκτημα:</strong> Σε επίπεδο έδαφος, οι 16.000 φαλαγγίτες με τις 6 μέτρων σάρισσες ήταν ένα αδιαπέραστο τείχος, ικανό να συντρίψει οποιαδήποτε μετωπική επίθεση.
+                    </li>
+                     <li>
+                        <strong>Μειονέκτημα:</strong> Απόλυτη ακαμψία. Δεν μπορούσε να στρίψει, να ανασυνταχθεί ή να αμυνθεί αν δεχόταν επίθεση από τα πλάγια ή αν επιχειρούσε σε ανώμαλο έδαφος.
+                    </li>
+                </ul>
+                <div class="divider"></div>
+                <p>Η φάλαγγα ήταν μια αμυντική δύναμη εξαιρετικής αποτελεσματικότητας, αλλά μόνο υπό συγκεκριμένες συνθήκες - επίπεδο έδαφος και προστασία των πλευρών.</p>
+            </div>
+        </div>
+        
+        <!-- Page 6 -->
+        <div id="page-6" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+             <div class="page-content">
+                <h3>Στρατιωτικά Δόγματα: Η Λεγεώνα</h3>
+                <ul>
+                    <li>
+                        <strong>Στόχος:</strong> Ευκινησία και ελιγμοί.
+                    </li>
+                     <li>
+                        <strong>Πλεονέκτημα:</strong> Η οργάνωση σε μικρές σπείρες (manipulae) επέτρεπε στη λεγεώνα να προσαρμόζεται στο έδαφος και να εκμεταλλεύεται κενά. Ήταν σχεδιασμένη για πολυδιάστατη μάχη.
+                    </li>
+                    <li>
+                        <strong>Ευελιξία:</strong> Κάθε σπείρα μπορούσε να λειτουργεί ανεξάρτητα, επιτρέποντας στους Ρωμαίους να αντιμετωπίζουν απειλές από πολλαπλές κατευθύνσεις ταυτόχρονα.
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Page 7 -->
+        <div id="page-7" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+             <div class="page-content">
+                <h3>Η Αρχή της Μάχης: Το Χάος της Ομίχλης</h3>
+                <p>Η μάχη (197 π.Χ.) έλαβε χώρα στους λοφίσκους των Κυνός Κεφαλών, ένα απόλυτα ακατάλληλο έδαφος για τη φάλαγγα.</p>
+                <div class="divider"></div>
+                <p>Η μάχη ξεκίνησε τυχαία, καθώς ένα τμήμα του ρωμαϊκού ιππικού συναντήθηκε με τις μακεδονικές εμπροσθοφυλακές μέσα σε πυκνή ομίχλη και σε λοφώδες έδαφος.</p>
+                <div class="divider"></div>
+                <p>Η ομίχλη και το ανώμαλο έδαφος αποδείχθηκαν καθοριστικοί παράγοντες που ευνόησαν την ευέλικτη ρωμαϊκή λεγεώνα έναντι της άκαμπτης μακεδονικής φάλαγγας.</p>
+            </div>
+        </div>
+
+        <!-- Page 8 -->
+        <div id="page-8" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+            <div class="page-content">
+                <h3>Η Πρώτη Φάση: Η Μακεδονική Επιτυχία</h3>
+                <p>Ο Φίλιππος κατάφερε να παρατάξει εγκαίρως το δεξί κέρας του στρατού του (περίπου 8.000 άνδρες). Αυτή η σχηματισμένη φάλαγγα εφόρμησε και απώθησε με σφοδρότητα τη ρωμαϊκή αριστερή πτέρυγα. Οι Ρωμαίοι υπέστησαν σοβαρό πλήγμα, με εκτιμώμενες απώλειες περίπου 700 ανδρών κατά την αρχική μετωπική επαφή.</p>
+                <div class="divider"></div>
+                <p>Αυτή η αρχική επιτυχία των Μακεδόνων έδωσε ψευδή ελπίδα για νίκη, αλλά ταυτόχρονα δημιούργησε μια επικίνδυνη ψευδαίσθηση ασφάλειας που θα εξελισσόταν σε καταστροφή.</p>
+            </div>
+        </div>
+        
+        <!-- Page 9 -->
+        <div id="page-9" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+            <div class="page-content">
+                <h3>Η Ανατροπή: Ο Ελιγμός του Χιλιάρχου</h3>
+                <p>Ο Φλαμινίνος εκμεταλλεύτηκε την καθυστέρηση του μακεδονικού αριστερού κέρους, το οποίο δεν είχε σχηματίσει πλήρη παράταξη. Η επίθεση των πολεμικών ελεφάντων διέλυσε αυτό το άτακτο τμήμα.</p>
+                <div class="divider"></div>
+                <p>Εκείνη την κρίσιμη στιγμή, ένας ανώνυμος Ρωμαίος χιλίαρχος πήρε μια απόφαση ζωής ή θανάτου. Αντί να ακολουθήσει την καταδίωξη, έστρεψε 20 ρωμαϊκές σπείρες (manipulae) και επιτέθηκε αιφνιδιαστικά στα νώτα του νικηφόρου μακεδονικού δεξιού κέρους.</p>
+                <div class="divider"></div>
+                <p>Αυτή η πρωτοβουλία ενός μόνο αξιωματικού άλλαξε την πορεία της μάχης και αποτέλεσε απόδειξη της ευελιξίας και της αποκεντρωμένης λήψης αποφάσεων του ρωμαϊκού στρατιωτικού συστήματος.</p>
+            </div>
+        </div>
+        
+        <!-- Page 10 -->
+        <div id="page-10" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+            <div class="page-content">
+                <h3>Η Κατάρρευση της Φάλαγγας</h3>
+                <p>Η μακεδονική φάλαγγα δέχεται την επίθεση από τα νώτα. Η δομική της ακαμψία την καθιστά ανίκανη να αντιδράσει ή να στρίψει γρήγορα τις σάρισσες. Η ευέλικτη λεγεώνα, σε μικρές ομάδες, εισχωρεί στα κενά που δημιούργησε το ανώμαλο έδαφος, επιφέροντας μαζικές απώλειες.</p>
+                <div class="divider"></div>
+                <p>Η μάχη μετατράπηκε σε σφαγή. Η δομική υπεροχή της λεγεώνας στο ανώμαλο έδαφος επισφραγίστηκε από την πρωτοβουλία του χιλιάρχου.</p>
+                <div class="divider"></div>
+                <p>Οι φαλαγγίτες, παγιδευμένοι στις άκαμπτες παράταξές τους και ανίκανοι να προστατεύσουν τα πλάγια και τα νώτα τους, έπεσαν θύματα της υπεροχής της ρωμαϊκής τακτικής.</p>
+            </div>
+        </div>
+        
+        <!-- Page 11 -->
+        <div id="page-11" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+            <div class="page-content">
+                <h3>Οι Απώλειες</h3>
+                <ul>
+                    <li><strong>Μακεδονικό Βασίλειο:</strong> 5.000 νεκροί.</li>
+                    <li><strong>Ρωμαϊκή Δημοκρατία:</strong> 2.000 νεκροί.</li>
+                </ul>
+                <div class="divider"></div>
+                <p>Η τεράστια διαφορά στις απώλειες οφείλεται στο ότι μόλις η φάλαγγα διασπάστηκε και κύκλωσε, οι φαλαγγίτες ήταν ανυπεράσπιστοι.</p>
+                <div class="divider"></div>
+                <p>Οι Μακεδόνες υπέστησαν απώλειες που αντιστοιχούσαν στο 20% του στρατού τους, ένα ποσοστό που καθιστά τη μάχη μια από τις πιο αιματηρές συγκρούσεις της ελληνιστικής εποχής.</p>
+            </div>
+        </div>
+        
+        <!-- Page 12 -->
+        <div id="page-12" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+            <div class="page-content">
+                <h3>Η Πολιτική Κληρονομιά</h3>
+                <ul>
+                    <li>
+                        <strong>Ήττα του Φιλίππου:</strong> Ο Φίλιππος Ε' αναγκάστηκε να συνθηκολογήσει, παραδίδοντας μεγάλο μέρος της δύναμής του.
+                    </li>
+                    <li>
+                        <strong>Η «Ελευθερία» των Ελλήνων:</strong> Ο Φλαμινίνος διακήρυξε το 196 π.Χ. την «ελευθερία των Ελλήνων». Αυτή η διακήρυξη, αν και φαινομενικά γενναιόδωρη, ήταν το διπλωματικό προκάλυμμα για την έναρξη της ρωμαϊκής επικυριαρχίας στην Ελλάδα.
+                    </li>
+                </ul>
+                <div class="divider"></div>
+                <p>Η μάχη των Κυνός Κεφαλών σηματοδότησε το τέλος της μακεδονικής ηγεμονίας στην Ελλάδα και την έναρξη της ρωμαϊκής επιρροή στην περιοχή.</p>
+            </div>
+        </div>
+
+        <!-- Page 13 -->
+        <div id="page-13" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+            <div class="page-content">
+                <h3>Εγκαθίδρυση Ρωμαϊκής Κυριαρχίας</h3>
+                <p>Το σημαντικότερο πολιτικό επακόλουθο ήταν η διακήρυξη από τον Φλαμινίνο της «ελευθερίας των Ελλήνων» το 196 π.Χ. Αυτή η διακήρυξη λειτούργησε ως διπλωματικό εργαλείο.</p>
+                <div class="divider"></div>
+                <p>Ενώ φαινομενικά τερμάτιζε τη μακεδονική ηγεμονία, στην πραγματικότητα εγκαθίδρυσε τη ρωμαϊκή επικυριαρχία. Η Ρώμη άρχισε τη σταδιακή υποταγή της Ελλάδας, αποφεύγοντας την άμεση προσάρτηση, αλλά διατηρώντας την πολιτική και στρατιωτική της επιρροή μέσω της «ελεγχόμενης ελευθερίας».</p>
+                <div class="divider"></div>
+                <p>Αυτή η τακτική της έμμεσης διακυβέρνησης θα χαρακτηρίζει τη ρωμαϊκή πολιτική στην Ελλάδα για τις επόμενες δεκαετίες, μέχρι την οριστική προσάρτηση της χερσονήσου.</p>
+            </div>
+        </div>
+        
+        <!-- Page 14 -->
+        <div id="page-14" class="page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+            <div class="page-content">
+                <h3>Συμπέρασμα: Το Τέλος μιας Εποχής</h3>
+                <p>Η Μάχη των Κυνός Κεφαλών είναι το αναμφισβήτητο ορόσημο που σηματοδότησε:</p>
+                <ul>
+                    <li><strong>Το Τέλος της Φάλαγγας:</strong> Η ευέλικτη λεγεώνα αποδείχθηκε ανώτερη.</li>
+                    <li><strong>Το Τέλος της Μακεδονικής Ηγεμονίας:</strong> Άνοιξε τον δρόμο για την οριστική υποταγή της Ελλάδας.</li>
+                    <li><strong>Η Ανατολή της Αυτοκρατορίας:</strong> Η Ρώμη μετατράπηκε σε κυρίαρχο ηγεμόνα της Μεσογείου.</li>
+                </ul>
+                <div class="divider"></div>
+                <p>Αυτή η μάχη δεν ήταν απλώς μια στρατιωτική σύγκρουση, αλλά μια ιστορική καμπή που άλλαξε για πάντα την πολιτική και στρατιωτική ισορροπία δυνάμεων στην ανατολική Μεσόγειο.</p>
+            </div>
+        </div>
+
+        <!-- Final Page -->
+        <div id="page-15" class="page thank-you-page">
+            <div class="municipality-label">ΔΗΜΟΣ ΦΑΡΣΑΛΩΝ 2025</div>
+            <div class="page-content">
+                <h1>Σας ευχαριστούμε που παρακολουθήσατε αυτή την παρουσίαση</h1>
+                <div class="final-buttons">
+                    <button id="restart-btn" class="welcome-btn" style="max-width: 300px;">
+                        <i class="fas fa-redo"></i> Ξαναδείτε την Παρουσίαση
+                    </button>
+                    <a href="https://conchr.github.io/Kynos-Quiz/" class="welcome-btn quiz-btn" style="max-width: 300px;">
+                        <i class="fas fa-gamepad"></i> Παίξε το Κουίζ
+                    </a>
+                    <a href="https://conchr.github.io/Games/" class="welcome-btn" style="max-width: 300px;">
+                        <i class="fas fa-home"></i> Αρχική Σελίδα
+                    </a>
+                </div>
+            </div>
+            <div class="keyboard-hint">
+                <i class="fas fa-info-circle"></i> Πατήστε το βέλος αριστερά για να επιστρέψετε στην αρχή
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation-footer">
+            <div class="nav-buttons">
+                <button id="prevBtn" class="btn">
+                    <i class="fas fa-arrow-left"></i> Προηγούμενη
+                </button>
+                <button id="nextBtn" class="btn">
+                    Επόμενη <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            
+            <div class="home-button-container">
+                <a href="https://conchr.github.io/Games/" class="btn btn-home">
+                    <i class="fas fa-home"></i> Αρχική Σελίδα
+                </a>
+            </div>
+            
+            <!-- Αφαίρεση του duplicate page indicator και progress bar από το footer -->
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for navigation
+        let currentPageIndex = 1;
+        const totalPages = 15;
+        const pages = document.querySelectorAll('.page');
+        const prevButton = document.getElementById('prevBtn');
+        const nextButton = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progress');
+        const currentPageSpan = document.getElementById('currentPage');
+        const totalPagesSpan = document.getElementById('totalPages');
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const presentationContainer = document.querySelector('.presentation-container');
+        const startBtn = document.getElementById('start-btn');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // Initialize total pages indicator
+        totalPagesSpan.textContent = totalPages;
+
+        // Start presentation
+        startBtn.addEventListener('click', () => {
+            welcomeScreen.classList.add('fade-out');
+            setTimeout(() => {
+                welcomeScreen.style.display = 'none';
+                presentationContainer.style.display = 'flex';
+                showPage(currentPageIndex);
+            }, 800);
+        });
+
+        // Restart presentation
+        restartBtn.addEventListener('click', () => {
+            currentPageIndex = 1;
+            showPage(currentPageIndex);
+        });
+
+        function updateProgress() {
+            const progressPercentage = (currentPageIndex / totalPages) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            currentPageSpan.textContent = currentPageIndex;
+        }
+
+        function showPage(index) {
+            // Hide all pages
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            // Show the target page
+            const targetPage = document.getElementById(`page-${index}`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update navigation buttons
+            prevButton.disabled = index === 1;
+            nextButton.disabled = index === totalPages;
+            
+            // Update progress
+            updateProgress();
+        }
+
+        function nextPage() {
+            if (currentPageIndex < totalPages) {
+                currentPageIndex++;
+                showPage(currentPageIndex);
+            }
+        }
+
+        function prevPage() {
+            if (currentPageIndex > 1) {
+                currentPageIndex--;
+                showPage(currentPageIndex);
+            }
+        }
+
+        // Event listeners for buttons
+        prevButton.addEventListener('click', prevPage);
+        nextButton.addEventListener('click', nextPage);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                prevPage();
+            } else if (e.key === 'Home') {
+                currentPageIndex = 1;
+                showPage(currentPageIndex);
+            } else if (e.key === 'End') {
+                currentPageIndex = totalPages;
+                showPage(currentPageIndex);
+            }
+        });
+
+        // Initially show the first page
+        showPage(currentPageIndex);
+    </script>
+
+</body>
+</html>
